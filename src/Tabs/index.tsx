@@ -1,64 +1,31 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import Principal from './Principal';
-import Consultas from './Consultas';
-import Explorar from './Explorar';
-import Perfil from './Perfil';
+import { optionsTabs } from '../utils/BottomTabsConfig';
 
 const Tab = createBottomTabNavigator();
 
 export default function Tabs() {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: "#002851"
-        },
-        tabBarActiveTintColor: "#339CFF",
-        tabBarInactiveTintColor: "#FFF"
-      }}
-    >
-      <Tab.Screen
-        name="Login"
-        component={Principal}
-        options={{ 
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
-          )
-        }}
-      />
-      <Tab.Screen
-        name="Cadastro"
-        component={Consultas}
-        options={{ 
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar" color={color} size={size} />
-          )
-        }}
-      />
-      <Tab.Screen
-        name="Explorar"
-        component={Explorar}
-        options={{ 
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" color={color} size={size} />
-          )
-        }}
-      />
-      <Tab.Screen
-        name="Perfil"
-        component={Perfil}
-        options={{ 
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" color={color} size={size} />
-          )
-        }}
-      />
+    <Tab.Navigator screenOptions={{
+      tabBarStyle: {
+        backgroundColor: "#002851",
+      },
+      tabBarActiveTintColor: "#339CFF",
+      tabBarInactiveTintColor: "#FFF",
+    }}>
+      {optionsTabs.map((option) => (
+        <Tab.Screen
+          key={option.name}
+          name={option.name}
+          component={option.component}
+          options={{ 
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name={option.icon} color={color} size={size} />
+            )
+          }}
+        />
+      ))}
     </Tab.Navigator>
   );
 }
