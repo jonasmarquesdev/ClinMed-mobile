@@ -1,7 +1,9 @@
-import { VStack, Image, Text, Box, FormControl, Input, Button, Link } from 'native-base';
+import { VStack, Image, Text, Box, Link } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { Titulo } from './components/Titulo';
 import Logo from './assets/Logo.png';
+import { EntradaTexto } from './components/EntradaTexto';
+import { Botao } from './components/Botao';
 
 export default function Login() {
   return (
@@ -18,38 +20,13 @@ export default function Login() {
       </Titulo>
 
       <Box>
-        <FormControl mt={3}>
-          <FormControl.Label>Email</FormControl.Label>
-          <Input
-            placeholder="Insira seu endereço de email"
-            size="lg"
-            w="100%"
-            borderRadius="lg"
-            bgColor="gray.100"
-            shadow={3}
-          />
-        </FormControl>
-        <FormControl mt={3}>
-          <FormControl.Label>Senha</FormControl.Label>
-          <Input
-            placeholder="Insira sua senha"
-            size="lg"
-            w="100%"
-            borderRadius="lg"
-            bgColor="gray.100"
-            shadow={3}
-          />
-        </FormControl>
+        <EntradaTexto label="Email" placeholder="Insira seu endereço de email" />
+        <EntradaTexto label="Senha" placeholder="Insira sua senha" />
       </Box>
 
-      <Button
-        w="100%"
-        bg="blue.800"
-        mt={10}
-        borderRadius="lg"
-      >
+      <Botao>
         Entrar
-      </Button>
+      </Botao>
 
       <Link href="https://www.google.com.br" mt={2}>
         Esqueceu sua senha?
