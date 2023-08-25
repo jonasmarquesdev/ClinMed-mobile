@@ -5,7 +5,7 @@ import Logo from './assets/Logo.png';
 import { EntradaTexto } from './components/EntradaTexto';
 import { Botao } from './components/Botao';
 
-export default function Login() {
+export default function Login({ navigation }) {
   return (
     <VStack 
       flex={1} 
@@ -24,7 +24,7 @@ export default function Login() {
         <EntradaTexto label="Senha" placeholder="Insira sua senha" />
       </Box>
 
-      <Botao>
+      <Botao onPress={() => navigation.navigate('Tabs')}>
         Entrar
       </Botao>
 
@@ -39,8 +39,10 @@ export default function Login() {
         mt={8}
       >
         <Text>Ainda não tem cadastro? </Text>
-        <TouchableOpacity>
-          <Text color="blue.500">Faça seu cadastro!</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+          <Text color="blue.500">
+            Faça seu cadastro!
+          </Text>
         </TouchableOpacity>
       </Box>
 
