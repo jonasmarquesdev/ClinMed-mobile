@@ -15,7 +15,7 @@ export default function Consultas() {
         alignSelf="flex-start"
         mb={2}
       >
-        Resultado da busca
+        Próximas consultas
       </Titulo>
 
       <CardConsulta 
