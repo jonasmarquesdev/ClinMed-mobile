@@ -1,9 +1,9 @@
-import api from "./api";
+import baseUrlConf from "./baseUrlConf";
 
 export async function fazerLogin(email: string, senha: string) {
   if (!email || !senha) return null; // verifica se vazio
   try {
-    const resultado = await api.post("/auth/login", {
+    const resultado = await baseUrlConf.post("/auth/login", {
       email,
       senha
     });
