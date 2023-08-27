@@ -1,11 +1,56 @@
-import { VStack, Image, Text, Box, Link } from 'native-base';
+import { VStack, Image, Text, Box, Link, useToast } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { Titulo } from './components/Titulo';
 import Logo from './assets/Logo.png';
 import { EntradaTexto } from './components/EntradaTexto';
 import { Botao } from './components/Botao';
+import { useState } from 'react';
+import { fazerLogin } from './services/AutenticacaoService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode from 'jwt-decode';
+import { useEffect } from 'react';
 
-export default function Login({ navigation }) {
+export default function Login({ navigation }: any) {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const toast = useToast();
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    async function verificarLogin() {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        navigation.replace('Tabs');
+      }
+      setCarregando(false);
+    }
+    verificarLogin();
+  }, []);
+
+  async function login() {
+    const resultado = await fazerLogin(email, senha);
+    if (resultado) {
+      const { token } = resultado; // extrai token do resultado
+      AsyncStorage.setItem('token', token);
+
+      const tokenDecodificado = jwtDecode(token) as any;
+      const pacienteId = tokenDecodificado.id;
+      AsyncStorage.setItem('pacientId', pacienteId);
+
+      navigation.replace('Tabs');
+    } else {
+      toast.show({
+        title: "Erro no login",
+        description: "O email ou senha não conferem",
+        backgroundColor: "red.500"
+      });
+    }
+  }
+
+  if (carregando) {
+    return null;
+  }
+
   return (
     <VStack 
       flex={1} 
@@ -20,11 +65,22 @@ export default function Login({ navigation }) {
       </Titulo>
 
       <Box>
-        <EntradaTexto label="Email" placeholder="Insira seu endereço de email" />
-        <EntradaTexto label="Senha" placeholder="Insira sua senha" />
+        <EntradaTexto 
+          label="Email" 
+          placeholder="Insira seu endereço de email" 
+          value={email}
+          onChangeText={setEmail}
+        />
+        <EntradaTexto 
+          label="Senha" 
+          placeholder="Insira sua senha" 
+          value={senha}
+          onChangeText={setSenha}
+          secureTextEntry
+        />
       </Box>
 
-      <Botao onPress={() => navigation.navigate('Tabs')}>
+      <Botao onPress={login}>
         Entrar
       </Botao>
 
