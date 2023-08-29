@@ -3,8 +3,29 @@ import { Botao } from "../components/Botao";
 import { CardConsulta } from "../components/CardConsulta";
 import { Titulo } from "../components/Titulo";
 import { EntradaTexto } from "../components/EntradaTexto";
+import { useState } from "react";
+import { buscarEspecialistaPorEstado } from "../services/EspecialistaService";
+
+interface Especialista {
+  nome: string,
+  imagem: string,
+  especialidade: string
+}
 
 export default function Explorar() {
+  const [estado, setEstado] = useState('');
+  const [especialidade, setEspecialidade] = useState('');
+  const [resultadoBusca, setResultadoBusca] = useState([]);
+
+  async function buscar() {
+    if (!estado || !especialidade) return null
+    const resultado = await buscarEspecialistaPorEstado(estado, especialidade);
+    if(resultado) {
+      setResultadoBusca(resultado);
+      console.log(resultado);
+    }
+  }
+
   return (
     <ScrollView flex={1} bgColor="white">
       <VStack flex={1} alignItems="flex-start" justifyContent={"flex-start"} p={5}>
@@ -12,11 +33,15 @@ export default function Explorar() {
         <Box w="100%" borderRadius="lg" p={3} mt={5} shadow="1" borderRightRadius="md">
           <EntradaTexto
             placeholder="Digite a especialidade"
+            value={especialidade}
+            onChangeText={setEspecialidade}
           />
           <EntradaTexto
             placeholder="Digite sua localização"
+            value={estado}
+            onChangeText={setEstado}
           />
-          <Botao mt={3} mb={3}>
+          <Botao mt={3} mb={3} onPress={buscar}>
             Buscar
           </Botao>
         </Box>
@@ -28,7 +53,7 @@ export default function Explorar() {
         >
           Resultado da Busca
         </Titulo>
-        {[1, 2, 3].map((_, index) => (
+        {resultadoBusca?.map((especialista: Especialista, index) => (
           <VStack flex={1}
             w="100%"
             alignItems="flex-start"
@@ -36,9 +61,9 @@ export default function Explorar() {
             key={index}
           >
             <CardConsulta
-              name='Dr. André Cunha'
-              image='https://images.pexels.com/photos/17991457/pexels-photo-17991457/free-photo-of-preto-negro-cropped-top-cropped.jpeg'
-              specialty='Cardiologista'
+              name={especialista.nome}
+              image={especialista.imagem}
+              specialty={especialista.especialidade}
               align="center"
             />
           </VStack>
